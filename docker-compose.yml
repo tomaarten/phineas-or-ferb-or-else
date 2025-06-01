@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:5000"
     volumes:
-      - /mnt/docker/phineasandferb/static/uploads:/app/static/uploads
+      - "${UPLOADS_PATH:-/var/lib/phineas/static/uploads}:/app/static/uploads"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000"]
