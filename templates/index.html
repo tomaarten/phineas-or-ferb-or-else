@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+    <title>Image Classifier - Upload History</title>
+</head>
+<body>
+    <h1>Upload an image for classification</h1>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+
+    <hr>
+    <h2>Upload History</h2>
+    <ul>
+    {% for file, label in uploads %}
+        <li>
+            <strong>{{ label }}</strong><br>
+            <img src="{{ url_for('static', filename='uploads/' + file) }}" width="150"><br>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

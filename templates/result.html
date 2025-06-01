@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+<head>
+    <title>Classification Result</title>
+</head>
+<body>
+    <h1>Predicted Class: {{ label }}</h1>
+    <img src="{{ url_for('static', filename='uploads/' + image_url.split('/')[-1]) }}" alt="Uploaded Image">
+    <br><br>
+    <a href="/">Classify another image</a>
+</body>
+</html>
