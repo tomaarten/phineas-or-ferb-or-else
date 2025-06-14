@@ -8,6 +8,9 @@ services:
       - "8080:5000"
     volumes:
       - "${UPLOADS_PATH:-/var/lib/phineas/static/uploads}:/app/static/uploads"
+      - "${DATA_PATH:-/var/lib/phineas/data}:/app/data"
+    environment:
+      - RESULTS_PATH=/app/data/results.json
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000"]

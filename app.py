@@ -7,7 +7,14 @@ import uuid
 import json
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'static/uploads/'
+
+# Allow customization of where uploads and results are stored.
+app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER', 'static/uploads/')
+RESULTS_PATH = os.getenv('RESULTS_PATH', 'results.json')
+
+# Ensure required directories exist so that Docker volume mounts work as expected.
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+os.makedirs(os.path.dirname(RESULTS_PATH) or '.', exist_ok=True)
 
 # Load TFLite model and allocate tensors
 interpreter = tf.lite.Interpreter(model_path="model.tflite")
@@ -31,7 +38,7 @@ def preprocess_image(image_path):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_and_classify():
-    results_path = "results.json"
+    results_path = RESULTS_PATH
     results = {}
 
     # Load existing results if any
