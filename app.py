@@ -5,6 +5,8 @@ import os
 from PIL import Image
 import uuid
 import json
+import shutil
+from pathlib import Path
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads/'
@@ -14,6 +16,15 @@ MODEL_PATH = os.environ.get("MODEL_PATH", "model.tflite")
 RESULTS_PATH = os.environ.get("RESULTS_PATH", "results.json")
 FLASK_PORT = int(os.environ.get("FLASK_PORT", 5000))
 FLASK_DEBUG = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
+
+# Ensure the model file exists at the desired location
+default_model = Path(__file__).parent / "model.tflite"
+model_path = Path(MODEL_PATH)
+if not model_path.exists():
+    model_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy(default_model, model_path)
+
+MODEL_PATH = str(model_path)
 
 # Load TFLite model and allocate tensors
 interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
