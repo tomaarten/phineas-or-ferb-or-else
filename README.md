@@ -4,8 +4,9 @@ Goal is to make an universal package that people can use to train their own mode
 
 ## Configuration
 
-The application can be tuned through environment variables. These can either be
-set in your shell, passed via `docker-compose`, or stored in a `.env` file.
+The application can be tuned through environment variables. These can be set in
+your shell before launching `docker-compose` or defined under the
+`environment` key in `docker-compose.yml`.
 
 - `MODEL_PATH` - path to the TFLite model inside the container (default `model.tflite`)
 - `RESULTS_PATH` - path inside the container storing predictions (default `results.json`)
@@ -15,22 +16,6 @@ set in your shell, passed via `docker-compose`, or stored in a `.env` file.
 Host paths for uploads, the model and results are configured directly in
 `docker-compose.yml`.
 
-### Example
-
-Create a `.env` file in the project root:
-
-```env
-FLASK_PORT=5000
-FLASK_DEBUG=true
-MODEL_PATH=model.tflite
-RESULTS_PATH=results.json
-```
-
-Then start the service with:
-
-```bash
-docker-compose up
-```
 
 ### Startup behavior
 
