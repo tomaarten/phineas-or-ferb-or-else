@@ -24,3 +24,9 @@ ensures `/app/static/uploads`, `/app/model.tflite` and `/app/results.json`
 exist. If the mounted model file is empty, the bundled default model is copied
 so the service has a usable model on first start.
 
+## Docker image
+
+The application is published as `vries2k/phineasorferborelse:1.0` and the
+included `docker-compose.yml` uses this image by default. Adjust any of the
+paths or ports in the compose file if they do not fit your environment.
+
