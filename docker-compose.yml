@@ -1,29 +1,16 @@
-version: '3.9'
+version: "3.9"
 
 services:
   image-classifier:
     image: vries2k/phineasorferborelse:1.0
-    container_name: image-classifier
-    environment:
-      # Path to the TFLite model inside the container
-      MODEL_PATH: /app/model.tflite
-      # Path to store prediction results
-      RESULTS_PATH: /app/results.json
-      # Set to "true" to enable Flask debug mode
-      FLASK_DEBUG: "false"
+    entrypoint: ["/app/entrypoint.sh"]
     ports:
-      # Change the host port if needed
-      - "5000:5000"
+      - "5120:5000"
+    environment:
+      FLASK_DEBUG: "false"
     volumes:
-      # Uploaded images will be stored here
-      - /mnt/docker/phineasandferb/static/uploads:/app/static/uploads
-      # Model file location on the host
-      - /mnt/docker/phineasandferb/model.tflite:/app/model.tflite
-      # Results file location on the host
-      - /mnt/docker/phineasandferb/results.json:/app/results.json
+      # Single host directory for model, results, and any other data
+      - /mnt/docker/phineasandferb/data:/app/data
+      # (Optional) Separate mount if you prefer uploads outside /app/data
+      - /mnt/docker/phineasandferb/uploads:/app/static/uploads
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
