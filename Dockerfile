@@ -17,4 +17,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy app source
 COPY . .
 COPY templates/ templates/
-CMD ["python", "app.py"]
+# keep a copy of the bundled model so volumes can't overwrite it
+RUN cp model.tflite default_model.tflite
+
+# run setup script before launching the application
+CMD ["bash", "-c", "python setup_paths.py && python app.py"]

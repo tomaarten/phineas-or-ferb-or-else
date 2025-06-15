@@ -32,3 +32,10 @@ Then start the service with:
 docker-compose up
 ```
 
+### Startup behavior
+
+The container runs `setup_paths.py` before launching the Flask app. This script
+ensures `/app/static/uploads`, `/app/model.tflite` and `/app/results.json`
+exist. If the mounted model file is empty, the bundled default model is copied
+so the service has a usable model on first start.
+
