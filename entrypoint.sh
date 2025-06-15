@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MODEL_PATH=/app/model.tflite
-# Download only if missing
-if [ ! -f "$MODEL_PATH" ]; then
-  echo "⏬ Retrieving model.tflite..."
-  wget -q -O "$MODEL_PATH" "https://raw.githubusercontent.com/tomaarten/phineas-or-ferb-or-else/main/model.tflite"
-  echo "✅ Download complete."
-fi
+mkdir -p /app/data
+# Download model if missing
+[ -f /app/data/model.tflite ] && echo "Model exists" \
+  || wget -q -O /app/data/model.tflite https://raw.githubusercontent.com/tomaarten/phineas-or-ferb-or-else/main/model.tflite
 
-# Launch your app (adjust as needed)
+# Initialize results file
+touch /app/data/results.json
+
 exec python server.py
