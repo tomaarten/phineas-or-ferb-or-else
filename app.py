@@ -9,8 +9,14 @@ import json
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads/'
 
+# Paths and runtime options from environment variables
+MODEL_PATH = os.environ.get("MODEL_PATH", "model.tflite")
+RESULTS_PATH = os.environ.get("RESULTS_PATH", "results.json")
+FLASK_PORT = int(os.environ.get("FLASK_PORT", 5000))
+FLASK_DEBUG = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
+
 # Load TFLite model and allocate tensors
-interpreter = tf.lite.Interpreter(model_path="model.tflite")
+interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
 interpreter.allocate_tensors()
 
 # Get input and output tensors
@@ -31,7 +37,7 @@ def preprocess_image(image_path):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_and_classify():
-    results_path = "results.json"
+    results_path = RESULTS_PATH
     results = {}
 
     # Load existing results if any
@@ -69,4 +75,8 @@ def upload_and_classify():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(
+        debug=os.environ.get("FLASK_DEBUG", "false").lower() == "true",
+        host='0.0.0.0',
+        port=int(os.environ.get("FLASK_PORT", 5000))
+    )
