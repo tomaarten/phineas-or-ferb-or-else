@@ -3,8 +3,8 @@ from pathlib import Path
 import shutil
 
 UPLOAD_DIR = Path('/app/static/uploads')
-MODEL_PATH = Path('/app/model.tflite')
-RESULTS_PATH = Path('/app/results.json')
+MODEL_PATH = Path(os.environ.get('MODEL_PATH', '/app/model.tflite'))
+RESULTS_PATH = Path(os.environ.get('RESULTS_PATH', '/app/results.json'))
 DEFAULT_MODEL = Path('/app/default_model.tflite')
 
 # Ensure upload directory exists
